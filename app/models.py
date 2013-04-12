@@ -34,6 +34,7 @@ class Device(models.Model):
 
 class Activity(models.Model):
     city = models.ForeignKey(City)
+    location = models.CharField(max_length=200)
 
     title = models.CharField(max_length=2000)
     content = models.TextField()
