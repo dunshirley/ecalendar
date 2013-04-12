@@ -1,7 +1,7 @@
 from django.db import models
 
 class Calendar(models.Model):
-    date = models.DateField()
+    date = models.DateField(unique=True)
     name = models.CharField(max_length=20)
 
     def __unicode__(self):
