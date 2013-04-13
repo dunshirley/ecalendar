@@ -40,14 +40,16 @@ class Activity(models.Model):
     content = models.TextField()
     url = models.CharField(max_length=1000)
     source = models.CharField(max_length=100)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_date = models.DateField()
+    start_time = models.TimeField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
 
     weight = models.IntegerField(blank=True, null=True)
     public = models.BooleanField(default=True)
 
     created_time = models.DateTimeField(auto_now_add=True)
-    modified_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now=True)
 
     tags = models.ManyToManyField('Tag', blank=True)
 
