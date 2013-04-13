@@ -165,11 +165,11 @@ hr {
 /* TEXT STYLES & MODIFIERS */
 
 .small {
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .tiny {
-    font-size: 10px;
+    font-size: 12px;
 }
 
 p.tiny {
@@ -177,7 +177,7 @@ p.tiny {
 }
 
 .mini {
-    font-size: 9px;
+    font-size: 11px;
 }
 
 p.mini {
@@ -413,7 +413,7 @@ input, textarea, select, .form-row p {
     vertical-align: middle;
     font-family: "Lucida Grande", Verdana, Arial, sans-serif;
     font-weight: normal;
-    font-size: 11px;
+    font-size: 13px;
 }
 
 textarea {
