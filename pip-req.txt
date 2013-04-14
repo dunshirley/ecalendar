@@ -1,4 +1,5 @@
 Django
+django-csvimport
 MySQL-python
 uWSGI
 Scrapy

@@ -128,8 +128,11 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app',
     'django.contrib.admin',
+
+    'csvimport',
+
+    'app',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
