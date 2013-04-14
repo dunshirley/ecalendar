@@ -22,7 +22,7 @@ class ActivityAdmin(admin.ModelAdmin):
     ordering = ('start_time', 'weight')
 
     def abstract(self, obj):
-        return obj.content[:100]
+        return obj.content[:40]
 
 class StartURLAdmin(admin.ModelAdmin):
     list_display = ('url', 'status', 'crawl_start_time', 'crawl_end_time')
