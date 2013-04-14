@@ -25,7 +25,9 @@ class ActivityAdmin(admin.ModelAdmin):
         return obj.content[:40]
 
 class StartURLAdmin(admin.ModelAdmin):
-    list_display = ('url', 'status', 'crawl_start_time', 'crawl_end_time')
+    list_display = ('url', 'status', 'modified_time', 'crawl_start_time', 'crawl_end_time')
+    ordering = ('-modified_time',)
+
 
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(City)
