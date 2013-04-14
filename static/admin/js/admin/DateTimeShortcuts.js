@@ -82,10 +82,11 @@ var DateTimeShortcuts = {
         var time_list = quickElement('ul', clock_box, '');
         time_list.className = 'timelist';
         var time_format = get_format('TIME_INPUT_FORMATS')[0];
-        quickElement("a", quickElement("li", time_list, ""), gettext("Now"), "href", "javascript:DateTimeShortcuts.handleClockQuicklink(" + num + ", new Date().strftime('" + time_format + "'));");
-        quickElement("a", quickElement("li", time_list, ""), gettext("Midnight"), "href", "javascript:DateTimeShortcuts.handleClockQuicklink(" + num + ", new Date(1970,1,1,0,0,0,0).strftime('" + time_format + "'));");
-        quickElement("a", quickElement("li", time_list, ""), gettext("6 a.m."), "href", "javascript:DateTimeShortcuts.handleClockQuicklink(" + num + ", new Date(1970,1,1,6,0,0,0).strftime('" + time_format + "'));");
-        quickElement("a", quickElement("li", time_list, ""), gettext("Noon"), "href", "javascript:DateTimeShortcuts.handleClockQuicklink(" + num + ", new Date(1970,1,1,12,0,0,0).strftime('" + time_format + "'));");
+        //quickElement("a", quickElement("li", time_list, ""), gettext("Now"), "href", "javascript:DateTimeShortcuts.handleClockQuicklink(" + num + ", new Date().strftime('" + time_format + "'));");
+        quickElement("a", quickElement("li", time_list, ""), gettext("9:00"), "href", "javascript:DateTimeShortcuts.handleClockQuicklink(" + num + ", new Date(1970,1,1,9,0,0,0).strftime('" + time_format + "'));");
+        quickElement("a", quickElement("li", time_list, ""), gettext("13:00"), "href", "javascript:DateTimeShortcuts.handleClockQuicklink(" + num + ", new Date(1970,1,1,13,0,0,0).strftime('" + time_format + "'));");
+        quickElement("a", quickElement("li", time_list, ""), gettext("19:00"), "href", "javascript:DateTimeShortcuts.handleClockQuicklink(" + num + ", new Date(1970,1,1,19,0,0,0).strftime('" + time_format + "'));");
+        quickElement("a", quickElement("li", time_list, ""), gettext("21:00"), "href", "javascript:DateTimeShortcuts.handleClockQuicklink(" + num + ", new Date(1970,1,1,21,0,0,0).strftime('" + time_format + "'));");
 
         var cancel_p = quickElement('p', clock_box, '');
         cancel_p.className = 'calendar-cancel';
