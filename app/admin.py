@@ -19,7 +19,7 @@ class ActivityAdmin(admin.ModelAdmin):
     list_display = ('public', 'start_date', 'start_time', 'end_date', 'end_time', 'title', 'weight', 'abstract', 'created_time', 'modified_time')
     list_filter = ('public', 'start_date', 'end_date', 'weight', 'tags', 'source',)
     search_fields = ['title', 'content']
-    ordering = ('start_time', 'weight')
+    ordering = ('start_date', 'start_time', '-weight')
 
     def abstract(self, obj):
         return obj.content[:40]
