@@ -46,7 +46,7 @@ class Activity(models.Model):
     end_time = models.TimeField(blank=True, null=True)
 
     weight = models.IntegerField(blank=True, null=True)
-    public = models.BooleanField(default=True)
+    public = models.BooleanField(editable=False, default=True)
 
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
@@ -73,3 +73,22 @@ class Feedback(models.Model):
 
     def __unicode__(self):
         return self.content[:20]
+
+class StartURL(models.Model):
+    KIND_STATUS = (
+            ('s', 'Submitted'),
+            ('i', 'Crawling'),
+            ('d', 'Done'),
+            ('e', 'Error'),
+            )
+
+    url = models.CharField(max_length=1000)
+    status = models.CharField(max_length=1, choices=KIND_STATUS, default='s', editable=False)
+
+    created_time = models.DateTimeField(auto_now_add=True)
+    crawl_start_time = models.DateTimeField(editable=False, blank=True, null=True)
+    crawl_end_time = models.DateTimeField(editable=False, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.url
+
