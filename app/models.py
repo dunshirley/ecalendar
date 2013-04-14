@@ -38,7 +38,7 @@ class Activity(models.Model):
 
     title = models.CharField(max_length=2000)
     content = models.TextField()
-    url = models.CharField(max_length=1000)
+    url = models.CharField(max_length=255)
     source = models.CharField(max_length=100)
     start_date = models.DateField()
     start_time = models.TimeField(blank=True, null=True)
@@ -82,7 +82,7 @@ class StartURL(models.Model):
             ('e', 'Error'),
             )
 
-    url = models.CharField(max_length=1000)
+    url = models.CharField(max_length=255, unique=True)
     status = models.CharField(max_length=1, choices=KIND_STATUS, default='s', editable=False)
 
     modified_time = models.DateTimeField(auto_now=True)
