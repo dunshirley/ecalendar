@@ -26,7 +26,7 @@ def activities(request):
         last_timestamp = request.GET['last_timestamp']
     else:
         last_timestamp = 0
-    last_date = date.fromtimestamp(last_timestamp)
+    last_date = date.fromtimestamp(float(last_timestamp))
     data = {}
     data['result'] = 'ok'
     today = date.today()
