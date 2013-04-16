@@ -12,7 +12,7 @@ def calendar(request):
     data = {}
     data['result'] = 'ok'
     today = date.today()
-    data['data'] = [{one.date.strftime('%Y-%m-%d'):one.name} for one in Calendar.objects.filter(date__gte=today)]
+    data['data'] = [{"date":one.date.strftime('%Y-%m-%d'),"name":one.name} for one in Calendar.objects.filter(date__gte=today)]
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 def activities(request):
@@ -23,7 +23,7 @@ def activities(request):
         return error_resp
     city = City.objects.get(pinyin=city)
     if 'last_timestamp' in request.GET:
-        last_timestamp = reqest.GET['last_timestamp']
+        last_timestamp = request.GET['last_timestamp']
     else:
         last_timestamp = 0
     last_date = date.fromtimestamp(last_timestamp)
