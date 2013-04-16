@@ -55,4 +55,35 @@ def activities(request):
     data['data'] = ans
     return HttpResponse(json.dumps(data), content_type="application/json")
 
+def reaction(request):
+    post = json.loads(request.body)
+    if 'device_id' not in post or 'data' not in post:
+        return error_resp
+
+    reactions = post['data']
+    device_id = post['device_id']
+
+    for reaction in reactions:
+        activity_id = reaction['activity_id']
+        like = reaction['like'] == '1'
+        dislike = reaction['dislike'] == '1'
+        clicked = reaction['clicked'] == '1'
+        if not Activity.objects.filter(id=activity_id):
+            return error_resp
+        activity = Activity.objects.get(id=activity_id)
+        device, _ = Device.objects.get_or_create(identification=device_id, os='a')
+        reaction = Reaction(activity=activity, device=device, 
+                like=like, dislike=dislike, clicked=clicked)
+        reaction.save()
+
+    data = {'result':'ok'}
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+def download(request):
+    data = {'has_new':'0', 'result':'ok'}
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+def feedback(request):
+    data = {'has_new':'0', 'result':'ok'}
+    return HttpResponse(json.dumps(data), content_type="application/json")
 

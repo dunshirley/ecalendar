@@ -64,8 +64,10 @@ class Reaction(models.Model):
     dislike = models.NullBooleanField()
     clicked = models.NullBooleanField()
 
+    created_time = models.DateTimeField(auto_now_add=True)
+
     def __unicode__(self):
-        return self.activity
+        return self.activity.title
 
 class Feedback(models.Model):
     content = models.CharField(max_length=10000)

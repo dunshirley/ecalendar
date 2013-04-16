@@ -29,11 +29,15 @@ class StartURLAdmin(admin.ModelAdmin):
     ordering = ('-modified_time',)
 
 
+class ReactionAdmin(admin.ModelAdmin):
+    list_display = ('activity', 'device', 'like', 'dislike', 'clicked', 'created_time')
+    ordering = ('-created_time',)
+
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(City)
 admin.site.register(Tag)
 admin.site.register(Device)
 admin.site.register(Activity, ActivityAdmin)
-admin.site.register(Reaction)
+admin.site.register(Reaction, ReactionAdmin)
 admin.site.register(Feedback)
 admin.site.register(StartURL, StartURLAdmin)
