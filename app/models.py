@@ -73,6 +73,8 @@ class Feedback(models.Model):
     content = models.CharField(max_length=10000)
     device = models.ForeignKey(Device)
 
+    created_time = models.DateTimeField(auto_now_add=True)
+
     def __unicode__(self):
         return self.content[:20]
 

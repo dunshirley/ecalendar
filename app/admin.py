@@ -33,11 +33,19 @@ class ReactionAdmin(admin.ModelAdmin):
     list_display = ('activity', 'device', 'like', 'dislike', 'clicked', 'created_time')
     ordering = ('-created_time',)
 
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ('content', 'device', 'created_time')
+    ordering = ('-created_time',)
+
+class CityAdmin(admin.ModelAdmin):
+    list_display = ('pinyin', 'name')
+    ordering = ('pinyin',)
+
 admin.site.register(Calendar, CalendarAdmin)
-admin.site.register(City)
+admin.site.register(City, CityAdmin)
 admin.site.register(Tag)
 admin.site.register(Device)
 admin.site.register(Activity, ActivityAdmin)
 admin.site.register(Reaction, ReactionAdmin)
-admin.site.register(Feedback)
+admin.site.register(Feedback, FeedbackAdmin)
 admin.site.register(StartURL, StartURLAdmin)
