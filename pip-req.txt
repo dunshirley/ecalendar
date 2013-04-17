@@ -1,6 +1,6 @@
 Django
-django-csvimport
 MySQL-python
 uWSGI
 Scrapy
 supervisord
+-e git://github.com:liangsun/django-csvimport.git#egg=django-csvimport
