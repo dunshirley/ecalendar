@@ -1,7 +1,6 @@
 #encoding:utf-8
 import json
-import time
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from django.http import HttpResponse
 
 from app.models import *
@@ -31,7 +30,7 @@ def activities(request):
     data['result'] = 'ok'
     today = date.today()
     two_months_later = today + timedelta(days=62)
-    data['timestamp'] = time.time()
+    data['timestamp'] = datetime.today().strftime('%s')
     activities = Activity.objects.filter(start_date__gte=today, start_date__lte=two_months_later, modified_time__gt=last_date, city=city)
     ans = []
     for activity in activities:
