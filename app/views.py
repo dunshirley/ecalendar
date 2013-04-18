@@ -25,7 +25,8 @@ def activities(request):
         last_timestamp = request.GET['last_timestamp']
     else:
         last_timestamp = 0
-    last_date = date.fromtimestamp(float(last_timestamp))
+    last_date = datetime.fromtimestamp(float(last_timestamp))
+
     data = {}
     data['result'] = 'ok'
     today = date.today()
@@ -35,6 +36,7 @@ def activities(request):
     ans = []
     for activity in activities:
         one = {}
+        one['id'] = str(activity.id)
         one['start_date'] = activity.start_date.strftime('%Y-%m-%d')
         if activity.start_time:
             one['start_time'] = activity.start_time.strftime('%M:%S')
