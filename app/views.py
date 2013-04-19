@@ -40,10 +40,16 @@ def activities(request):
         one['start_date'] = activity.start_date.strftime('%Y-%m-%d')
         if activity.start_time:
             one['start_time'] = activity.start_time.strftime('%M:%S')
+        else:
+            one['start_time'] = ''
         if activity.end_date:
             one['end_date'] = activity.end_date.strftime('%Y-%m-%d')
+        else:
+            one['end_date'] = ''
         if activity.end_time:
             one['end_time'] = activity.end_time.strftime('%M:%S')
+        else:
+            one['end_time'] = ''
         one['title'] = activity.title
         one['content'] = activity.content
         one['location'] = activity.location
