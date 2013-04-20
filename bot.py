@@ -12,7 +12,7 @@ from app.models import *
 class Bot(object):
     def __init__(self):
         self.urls = set()
-        self.interval = 6 # in seconds
+        self.interval = 60 # in seconds
         self.opener = urllib2.build_opener()
         self.opener.addheaders = [('User-agent', 'Mozilla/5.0 (compatible; EventsCalendarbot/1.0; +http://huodongrili.com/bot)')]
         self.encoding = 'utf-8'
@@ -63,7 +63,7 @@ class WeiboBot(Bot):
                  'start_datetime': u'//span[contains(text(),"开始时间")]/../span[2]/text()',
                  'end_datetime': u'//span[contains(text(),"结束时间")]/../span[2]/text()',
                  'location': u'//span[contains(text(),"地　　点")]/../span[2]/text()',
-                 'content': u'//div[@class="ev_details"]/../*/text()',
+                 'content': u'//div[@class="ev_details"]/text()|//div[@class="ev_details"]/*/text()',
                  }
          super(WeiboBot, self).__init__()
 
@@ -105,7 +105,7 @@ class WeiboBot(Bot):
 
 
             contents = tree.xpath(self.xpaths['content'])
-            content = '\n'.join(contents)
+            content = '\n'.join([n for n in contents if n.strip()])
             print 'content = ', content[:20]
 
             city_name = location[:2]
