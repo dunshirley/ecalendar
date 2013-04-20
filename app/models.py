@@ -46,7 +46,7 @@ class Activity(models.Model):
     end_time = models.TimeField(blank=True, null=True)
 
     weight = models.IntegerField(blank=True, null=True)
-    public = models.BooleanField(editable=False, default=True)
+    public = models.BooleanField(default=True)
 
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
