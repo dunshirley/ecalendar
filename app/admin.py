@@ -27,6 +27,11 @@ class ActivityAdmin(admin.ModelAdmin):
 class StartURLAdmin(admin.ModelAdmin):
     list_display = ('url', 'status', 'modified_time', 'crawl_start_time', 'crawl_end_time')
     ordering = ('-modified_time',)
+    actions = ['make_submitted']
+
+    def make_submitted(self, request, queryset):
+        queryset.update(status='s')
+    make_submitted.short_description = 'Mark selected URL as submitted status'
 
 
 class ReactionAdmin(admin.ModelAdmin):
