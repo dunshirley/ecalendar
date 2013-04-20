@@ -53,6 +53,9 @@ class Activity(models.Model):
 
     tags = models.ManyToManyField('Tag', blank=True)
 
+    class Meta:
+        unique_together = ('start_date', 'url',)
+
     def __unicode__(self):
         return self.title
 
