@@ -87,7 +87,7 @@ class StartURL(models.Model):
             )
 
     url = models.CharField(max_length=255, unique=True)
-    status = models.CharField(max_length=1, choices=KIND_STATUS, default='s', editable=False)
+    status = models.CharField(max_length=1, choices=KIND_STATUS, default='s')
 
     modified_time = models.DateTimeField(auto_now=True)
     crawl_start_time = models.DateTimeField(editable=False, blank=True, null=True)
