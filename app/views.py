@@ -105,4 +105,31 @@ def download(request):
     data = {'has_new':'0', 'result':'ok'}
     return HttpResponse(json.dumps(data), content_type="application/json")
 
+def bot(request):
+    data = """
+    <!DOCTYPE html>
+    <html>
+    <head><title>EventsCalendar Bot</title></head>
+    <body>
+    <h1>EventsCalendar Bot</h1>
+    <p>
+    EventsCalendarBot is EventsCalendar's web crawling bot (sometimes also called a "spider"). 
+    Crawling is the process by which EventsCalendarBot discovers new and updated pages to be added to the EventsCalendar index.
+    </p>
 
+    <p>
+    We use a set of computers to fetch (or "crawl") pages on the web. 
+    EventsCalendarBot uses an algorithmic process: 
+    computer programs determine which sites to crawl, how often, and how many pages to fetch from each site.
+    </p>
+
+    <p>
+    EventsCalendarBot's crawl process begins with a list of webpage URLs, 
+    generated from previous crawl processes and augmented with Sitemap data provided by webmasters.
+    As EventsCalendarBot visits each of these websites it detects links (SRC and HREF) on each page and adds them to its list of pages to crawl. 
+    New sites, changes to existing sites, and dead links are noted and used to update the EventsCalendar index.
+    </p>
+    </body>
+    </html>
+    """
+    return HttpResponse(data)

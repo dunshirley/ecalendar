@@ -9,4 +9,5 @@ urlpatterns = patterns('app.views',
     url(r'^reaction/?$', 'reaction'),
     url(r'^feedback/?$', 'feedback'),
     url(r'^app/?$', 'download'),
+    url(r'^bot/?', 'bot'),
 )
