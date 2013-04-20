@@ -63,20 +63,18 @@ class WeiboBot(Bot):
                  'start_datetime': u'//span[contains(text(),"开始时间")]/../span[2]/text()',
                  'end_datetime': u'//span[contains(text(),"结束时间")]/../span[2]/text()',
                  'location': u'//span[contains(text(),"地　　点")]/../span[2]/text()',
-                 'content': u'//div[@class="ev_details"]/text()',
+                 'content': u'//div[@class="ev_details"]/*/text()',
                  }
          super(WeiboBot, self).__init__()
 
     def scrap(self, url):
         tree = self.get_tree(url)
-        if len(tree) <= 0:
+        if not tree:
             return
         
         try:
-            result = {}
             title = tree.xpath(self.xpaths['title'])[0].strip()
             print 'get title = ', title
-            result['title'] = title
             
             found_date = False
             durations = tree.xpath(self.xpaths['duration'])
@@ -101,19 +99,14 @@ class WeiboBot(Bot):
                 end_time = self.get_time(m.group(3), m.group(4))
 
             print 'start_date = ', start_date
-            result['start_date'] = start_date
-            result['start_time'] = start_time
-            result['end_date'] = end_date
-            result['end_time'] = end_time
 
             location = tree.xpath(self.xpaths['location'])[0].strip()
-            result['location'] = location
             print 'location = ', location
 
-            content = '\n'.join(tree.xpath(self.xpaths['content']))
-            result['content'] = content
+
+            contents = tree.xpath(self.xpaths['content'])
+            content = '\n'.join(contents)
             print 'content = ', content[:20]
-            
 
             city_name = location[:2]
             city = City.objects.get(name=city_name)
