@@ -69,6 +69,7 @@ class WeiboBot(Bot):
          super(WeiboBot, self).__init__()
 
     def scrap(self, url):
+        crawl_start_time = datetime.datetime.now()
         tree = self.get_tree(url)
         if tree is None:
             return
@@ -138,12 +139,18 @@ class WeiboBot(Bot):
             activity.save()
 
             url.status = 'd'
+            url.crawl_start_time = crawl_start_time
+            url.crawl_end_time = datetime.datetime.now()
             url.save()
 
             print 'Done.'
         except Exception, e:
             print e
-            #url.status = 'e'
+
+            url.status = 'e'
+            url.crawl_start_time = crawl_start_time
+            url.crawl_end_time = datetime.datetime.now()
+            url.save()
         finally:
             pass
 
@@ -168,6 +175,7 @@ class DamaiBot(Bot):
 
 
     def scrap(self, url):
+        crawl_start_time = datetime.datetime.now()
         tree = self.get_tree(url)
         if tree is None:
             return
@@ -218,12 +226,18 @@ class DamaiBot(Bot):
             activity.save()
 
             url.status = 'd'
+            url.crawl_start_time = crawl_start_time
+            url.crawl_end_time = datetime.datetime.now()
             url.save()
 
             print 'Done.'
         except Exception, e:
             print e
-            #url.status = 'e'
+
+            url.status = 'e'
+            url.crawl_start_time = crawl_start_time
+            url.crawl_end_time = datetime.datetime.now()
+            url.save()
         finally:
             pass
 
