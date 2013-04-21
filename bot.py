@@ -1,6 +1,7 @@
 #encoding:utf-8
 import os, re
 import time
+import random
 import urllib2
 from lxml import etree
 import datetime
@@ -113,7 +114,7 @@ class WeiboBot(Bot):
             print 'city = ', city, 'city_id = ', city.id
 
             source = u'新浪微博'
-            weight = 60
+            weight = 60 + random.randint(0,10)
             public = 0
 
             try:
