@@ -17,10 +17,12 @@ class ActivityForm(forms.ModelForm):
 class ActivityAdmin(admin.ModelAdmin):
     form = ActivityForm
     list_display = ('public', 'start_date', 'start_time', 'end_date', 'end_time', 'title', 'weight', 'abstract', 'created_time', 'modified_time')
+    list_editable = ('weight',)
     list_filter = ('public', 'start_date', 'end_date', 'weight', 'tags', 'source',)
     search_fields = ['title', 'content']
     ordering = ('-start_date', '-start_time', '-weight')
     actions = ['make_public', 'make_private']
+
 
     def make_public(self, request, queryset):
         queryset.update(public=True)
