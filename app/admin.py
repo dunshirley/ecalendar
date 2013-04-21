@@ -20,6 +20,15 @@ class ActivityAdmin(admin.ModelAdmin):
     list_filter = ('public', 'start_date', 'end_date', 'weight', 'tags', 'source',)
     search_fields = ['title', 'content']
     ordering = ('-start_date', '-start_time', '-weight')
+    actions = ['make_public', 'make_private']
+
+    def make_public(self, request, queryset):
+        queryset.update(public=True)
+    make_public.short_description = 'Mark selected as public'
+
+    def make_private(self, request, queryset):
+        queryset.update(public=False)
+    make_private.short_description = 'Mark selected as private'
 
     def abstract(self, obj):
         return obj.content[:40]
