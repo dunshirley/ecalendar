@@ -22,7 +22,7 @@ class ActivityAdmin(admin.ModelAdmin):
     list_filter = ('public', 'start_date', 'end_date', 'weight', 'tags', 'source',)
     search_fields = ['title', 'content']
     ordering = ('-start_date', '-start_time', '-weight')
-    actions = ['make_public', 'make_private']
+    actions = ['make_public', 'make_private', 'recrawl']
 
     def make_public(self, request, queryset):
         queryset.update(public=True)
@@ -31,6 +31,16 @@ class ActivityAdmin(admin.ModelAdmin):
     def make_private(self, request, queryset):
         queryset.update(public=False)
     make_private.short_description = 'Mark selected as private'
+
+    def recrawl(self, request, queryset):
+        for obj in queryset:
+            try:
+                starturl = StartURL.objects.get(url=obj.url)
+                starturl.status = 's'
+                starturl.save()
+            except:
+                continue
+    recrawl.short_description = 'Re crawl selected'
 
     def abstract(self, obj):
         ans = obj.content[:20]
