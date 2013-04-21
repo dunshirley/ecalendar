@@ -129,6 +129,9 @@ def bot(request):
     As EventsCalendarBot visits each of these websites it detects links (SRC and HREF) on each page and adds them to its list of pages to crawl. 
     New sites, changes to existing sites, and dead links are noted and used to update the EventsCalendar index.
     </p>
+    <p>
+    If you find EventsCalendarBot abnormally accesses your website(for example in a much higher frequency), please report to <a href="mailto:i@liangsun.org">Liang Sun</a>.
+    </p>
     </body>
     </html>
     """
