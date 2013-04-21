@@ -35,9 +35,9 @@ class OutdatedListFilter(SimpleListFilter):
 
 class ActivityAdmin(admin.ModelAdmin):
     form = ActivityForm
-    list_display = ('public', 'start_date', 'start_time', 'end_date', 'end_time', 'title', 'weight', 'abstract', 'created_time', 'modified_time')
-    list_editable = ('weight',)
+    list_display = ('title', 'abstract', 'public', 'start_date', 'start_time', 'end_date', 'end_time', 'weight', 'created_time', 'modified_time')
     list_display_links = ('public', 'start_date')
+    list_editable = ('weight',)
     list_filter = (OutdatedListFilter, 'public', 'start_date', 'end_date', 'weight', 'tags', 'source',)
     search_fields = ['title', 'content']
     ordering = ('-start_date', '-start_time', '-weight')
@@ -70,13 +70,18 @@ class ActivityAdmin(admin.ModelAdmin):
     abstract.allow_tags = True
 
 class StartURLAdmin(admin.ModelAdmin):
-    list_display = ('url', 'status', 'modified_time', 'crawl_start_time', 'crawl_end_time')
+    list_display = ('url', 'status', 'modified_time', 'crawl_start_time', 'crawl_end_time', 'go')
+    list_display_links = ('url', 'modified_time',)
     ordering = ('-modified_time',)
     actions = ['make_submitted']
 
     def make_submitted(self, request, queryset):
         queryset.update(status='s')
     make_submitted.short_description = 'Mark selected URL as submitted status'
+
+    def go(self, obj):
+        return '<a href="' + obj.url + '" target="_blank">go</a>'
+    go.allow_tags = True
 
 
 class ReactionAdmin(admin.ModelAdmin):
