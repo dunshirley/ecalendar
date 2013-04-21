@@ -1,5 +1,7 @@
+from datetime import date
 from django.contrib import admin
 from django import forms
+from django.contrib.admin import SimpleListFilter
 from app.models import *
 
 class CalendarAdmin(admin.ModelAdmin):
@@ -14,12 +16,29 @@ class ActivityForm(forms.ModelForm):
             'tags':forms.SelectMultiple(attrs={'size': 12})
         }
 
+class OutdatedListFilter(SimpleListFilter):
+    title = 'Outdated'
+    parameter_name = 'outdated'
+
+    def lookups(self, request, model_admin):
+        return (
+                ('Yes', 'Yes'),
+                ('No', 'No'),
+                )
+    def queryset(self, request, queryset):
+        today = date.today()
+        if self.value() == 'Yes':
+            return queryset.filter(start_date__lt=today)
+        else:
+            return queryset.filter(start_date__gte=today)
+
+
 class ActivityAdmin(admin.ModelAdmin):
     form = ActivityForm
     list_display = ('public', 'start_date', 'start_time', 'end_date', 'end_time', 'title', 'weight', 'abstract', 'created_time', 'modified_time')
     list_editable = ('weight',)
     list_display_links = ('public', 'start_date')
-    list_filter = ('public', 'start_date', 'end_date', 'weight', 'tags', 'source',)
+    list_filter = (OutdatedListFilter, 'public', 'start_date', 'end_date', 'weight', 'tags', 'source',)
     search_fields = ['title', 'content']
     ordering = ('-start_date', '-start_time', '-weight')
     actions = ['make_public', 'make_private', 'recrawl']
