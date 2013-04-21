@@ -63,7 +63,7 @@ class WeiboBot(Bot):
                  'start_datetime': u'//span[contains(text(),"开始时间")]/../span[2]/text()',
                  'end_datetime': u'//span[contains(text(),"结束时间")]/../span[2]/text()',
                  'location': u'//span[contains(text(),"地　　点")]/../span[2]/text()',
-                 'content': u'//div[@class="ev_details"]/text()|//div[@class="ev_details"]/*/text()',
+                 'content': u'//div[@class="ev_details"]/descendant-or-self::*/text()',
                  }
          super(WeiboBot, self).__init__()
 
