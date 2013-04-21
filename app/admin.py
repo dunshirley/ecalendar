@@ -18,11 +18,11 @@ class ActivityAdmin(admin.ModelAdmin):
     form = ActivityForm
     list_display = ('public', 'start_date', 'start_time', 'end_date', 'end_time', 'title', 'weight', 'abstract', 'created_time', 'modified_time')
     list_editable = ('weight',)
+    list_display_links = ('public', 'start_date')
     list_filter = ('public', 'start_date', 'end_date', 'weight', 'tags', 'source',)
     search_fields = ['title', 'content']
     ordering = ('-start_date', '-start_time', '-weight')
     actions = ['make_public', 'make_private']
-
 
     def make_public(self, request, queryset):
         queryset.update(public=True)
@@ -33,7 +33,12 @@ class ActivityAdmin(admin.ModelAdmin):
     make_private.short_description = 'Mark selected as private'
 
     def abstract(self, obj):
-        return obj.content[:40]
+        ans = obj.content[:20]
+        if not ans:
+            ans = 'Content is empty.'
+        ans = '<a href="' + obj.url + '" target="_blank">' + ans + '</a>'
+        return ans
+    abstract.allow_tags = True
 
 class StartURLAdmin(admin.ModelAdmin):
     list_display = ('url', 'status', 'modified_time', 'crawl_start_time', 'crawl_end_time')
