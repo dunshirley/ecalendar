@@ -72,6 +72,8 @@ class ActivityAdmin(admin.ModelAdmin):
 class StartURLAdmin(admin.ModelAdmin):
     list_display = ('url', 'status', 'modified_time', 'crawl_start_time', 'crawl_end_time', 'go')
     list_display_links = ('url', 'modified_time',)
+    list_filter = ('status',)
+    search_fields = ['url']
     ordering = ('-modified_time',)
     actions = ['make_submitted']
 
