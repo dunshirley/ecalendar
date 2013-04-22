@@ -8,10 +8,17 @@ from app.models import *
 error_resp = HttpResponse(json.dumps({"result":"error"}))
 
 def calendar(request):
+    if 'last_timestamp' in request.GET:
+        last_timestamp = request.GET['last_timestamp']
+    else:
+        last_timestamp = 0
+    last_date = datetime.fromtimestamp(float(last_timestamp))
+
     data = {}
     data['result'] = 'ok'
     today = date.today()
-    data['data'] = [{"date":one.date.strftime('%Y-%m-%d'),"name":one.name} for one in Calendar.objects.filter(date__gte=today)]
+    data['data'] = [{"date":one.date.strftime('%Y-%m-%d'),"name":one.name} for one in Calendar.objects.filter(date__gte=today, modified_time__gte=last_date)]
+    data['timestamp'] = datetime.today().strftime('%s')
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 def activities(request):
@@ -32,7 +39,7 @@ def activities(request):
     today = date.today()
     two_months_later = today + timedelta(days=62)
     data['timestamp'] = datetime.today().strftime('%s')
-    activities = Activity.objects.filter(start_date__gte=today, start_date__lte=two_months_later, modified_time__gt=last_date, city=city)
+    activities = Activity.objects.filter(start_date__gte=today, start_date__lte=two_months_later, modified_time__gte=last_date, city=city)
     ans = []
     for activity in activities:
         one = {}

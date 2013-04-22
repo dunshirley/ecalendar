@@ -3,6 +3,7 @@ from django.db import models
 class Calendar(models.Model):
     date = models.DateField(unique=True)
     name = models.CharField(max_length=20)
+    modified_time = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return str(self.date) + '(' + self.name + ')'
