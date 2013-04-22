@@ -39,7 +39,7 @@ def activities(request):
         one['id'] = str(activity.id)
         one['start_date'] = activity.start_date.strftime('%Y-%m-%d')
         if activity.start_time:
-            one['start_time'] = activity.start_time.strftime('%M:%S')
+            one['start_time'] = activity.start_time.strftime('%H:%M')
         else:
             one['start_time'] = ''
         if activity.end_date:
@@ -47,7 +47,7 @@ def activities(request):
         else:
             one['end_date'] = ''
         if activity.end_time:
-            one['end_time'] = activity.end_time.strftime('%M:%S')
+            one['end_time'] = activity.end_time.strftime('%H:%M')
         else:
             one['end_time'] = ''
         one['title'] = activity.title
