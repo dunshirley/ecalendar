@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 from app.models import *
 
-error_resp = HttpResponse(json.dumps({"result":"error"}))
+error_resp = HttpResponse(json.dumps({"result":"error"}, ensure_ascii=False))
 
 def calendar(request):
     if 'last_timestamp' in request.GET:
@@ -19,7 +19,7 @@ def calendar(request):
     today = date.today()
     data['data'] = [{"date":one.date.strftime('%Y-%m-%d'),"name":one.name} for one in Calendar.objects.filter(date__gte=today, modified_time__gte=last_date)]
     data['timestamp'] = datetime.today().strftime('%s')
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return HttpResponse(json.dumps(data, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
 def activities(request):
     if 'city' not in request.GET:
@@ -67,7 +67,7 @@ def activities(request):
         ans.append(one)
 
     data['data'] = ans
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return HttpResponse(json.dumps(data, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
 def reaction(request):
     post = json.loads(request.body)
@@ -91,7 +91,7 @@ def reaction(request):
         reaction.save()
 
     data = {'result':'ok'}
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return HttpResponse(json.dumps(data, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
 def feedback(request):
     post = json.loads(request.body)
@@ -106,11 +106,11 @@ def feedback(request):
     feedback.save()
     
     data = {'result':'ok'}
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return HttpResponse(json.dumps(data, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
 def download(request):
     data = {'has_new':'0', 'result':'ok'}
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return HttpResponse(json.dumps(data, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
 def bot(request):
     data = """
