@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 from app.models import *
 
-error_resp = HttpResponse(json.dumps({"result":"error"}, ensure_ascii=False))
+error_resp = HttpResponse(json.dumps({"result":"error"}, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
 def calendar(request):
     if 'last_timestamp' in request.GET:
