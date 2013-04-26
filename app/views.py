@@ -111,7 +111,16 @@ def feedback(request):
 
 def update(request):
     data = {'has_new':'0', 'result':'ok'}
+    if 'last_version' in request.GET:
+        last_version = request.GET['last_version']
+    try:
+        apk = Apk.objects.all().order_by('-id')[0]
+        if tuple(map(int, apk.version.split('.'))) > tuple(map(int, last_version.split('.'))):
+            data = {'has_new':'1', 'result':'ok', 'url': '/download/' + apk.apkfile.url}
+    except:
+        pass
     return HttpResponse(json.dumps(data, ensure_ascii=False), content_type="application/json; charset=utf-8")
+    
 
 def download(request):
     if 'version' in request.GET:
