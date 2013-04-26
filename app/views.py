@@ -39,7 +39,7 @@ def activities(request):
     today = date.today()
     two_months_later = today + timedelta(days=62)
     data['timestamp'] = datetime.today().strftime('%s')
-    activities = Activity.objects.filter(start_date__gte=today, start_date__lte=two_months_later, modified_time__gte=last_date, city=city)
+    activities = Activity.objects.filter(start_date__gte=today, start_date__lte=two_months_later, modified_time__gte=last_date, city=city, public=True)
     ans = []
     for activity in activities:
         one = {}
