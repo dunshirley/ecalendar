@@ -2,6 +2,7 @@
 import json
 from datetime import date, datetime, timedelta
 from django.http import HttpResponse
+from django.shortcuts import redirect
 
 from app.models import *
 
@@ -108,9 +109,27 @@ def feedback(request):
     data = {'result':'ok'}
     return HttpResponse(json.dumps(data, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
-def download(request):
+def update(request):
     data = {'has_new':'0', 'result':'ok'}
     return HttpResponse(json.dumps(data, ensure_ascii=False), content_type="application/json; charset=utf-8")
+
+def download(request):
+    if 'version' in request.GET:
+        version = request.GET['version']
+        try:
+            apk = Apk.objects.get(version=version)
+        except:
+            return error_resp
+    else:
+        try:
+            apk = Apk.objects.all().order_by('-id')[0]
+        except:
+            return error_resp
+
+    data = {'result':'/download/' + apk.apkfile.url}
+    return redirect('/download/' + apk.apkfile.url)
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 def bot(request):
     data = """

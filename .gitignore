@@ -3,3 +3,4 @@
 csv/*
 *.log
 local_settings.py
+download/*

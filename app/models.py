@@ -100,3 +100,9 @@ class StartURL(models.Model):
     def __unicode__(self):
         return self.url
 
+class Apk(models.Model):
+    version = models.CharField(max_length=10, unique=True)
+    apkfile = models.FileField(upload_to='apk/%Y-%m-%d-%H-%M')
+
+    def __unicode__(self):
+        return self.version
