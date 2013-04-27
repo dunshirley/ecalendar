@@ -35,10 +35,10 @@ class OutdatedListFilter(SimpleListFilter):
 
 class ActivityAdmin(admin.ModelAdmin):
     form = ActivityForm
-    list_display = ('title', 'abstract', 'public', 'city', 'source', 'start_date', 'start_time', 'end_date', 'end_time', 'weight', 'modified_time')
-    list_display_links = ('public', 'start_date')
+    list_display = ('title', 'abstract', 'weight', 'public', 'city', 'origin', 'start_date', 'start_time', 'end_date', 'end_time')
+    list_display_links = ('abstract',)
     list_editable = ('weight', 'title')
-    list_filter = (OutdatedListFilter, 'public', 'city', 'start_date', 'end_date', 'weight', 'tags', 'source',)
+    list_filter = (OutdatedListFilter, 'public', 'city', 'start_date', 'end_date', 'tags', 'source',)
     search_fields = ['title', 'content']
     ordering = ('-start_date', '-start_time', '-weight')
     actions = ['make_public', 'make_private', 'recrawl']
@@ -65,9 +65,12 @@ class ActivityAdmin(admin.ModelAdmin):
         ans = obj.content[:20]
         if not ans:
             ans = 'Content is empty.'
-        ans = '<a href="' + obj.url + '" target="_blank">' + ans + '</a>'
         return ans
-    abstract.allow_tags = True
+
+    def origin(self, obj):
+        return '<a href="' + obj.url + '" target="_blank">' + obj.source + '</a>'
+    origin.allow_tags = True
+    
 
 class StartURLAdmin(admin.ModelAdmin):
     list_display = ('url', 'status', 'modified_time', 'crawl_start_time', 'crawl_end_time', 'go')
