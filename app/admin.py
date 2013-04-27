@@ -35,9 +35,9 @@ class OutdatedListFilter(SimpleListFilter):
 
 class ActivityAdmin(admin.ModelAdmin):
     form = ActivityForm
-    list_display = ('title', 'abstract', 'public', 'source', 'start_date', 'start_time', 'end_date', 'end_time', 'weight', 'created_time', 'modified_time')
+    list_display = ('title', 'abstract', 'public', 'city', 'source', 'start_date', 'start_time', 'end_date', 'end_time', 'weight', 'modified_time')
     list_display_links = ('public', 'start_date')
-    list_editable = ('weight',)
+    list_editable = ('weight', 'title')
     list_filter = (OutdatedListFilter, 'public', 'city', 'start_date', 'end_date', 'weight', 'tags', 'source',)
     search_fields = ['title', 'content']
     ordering = ('-start_date', '-start_time', '-weight')
