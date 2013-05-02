@@ -253,7 +253,7 @@ for route in bot_routes:
     instances[route[1]] = globals()[route[1]]()
 
 
-if __name__ == '__main__':
+def crawl_loop():
     urls = StartURL.objects.filter(status='s')
     for url in urls:
         for route in bot_routes:
@@ -263,3 +263,10 @@ if __name__ == '__main__':
 
     for instance in instances:
         instances[instance].run()
+
+if __name__ == '__main__':
+    while 1:
+        crawl_loop()
+        print 'Loop end'
+        print '-'*100
+        time.sleep(30)
