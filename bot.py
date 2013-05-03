@@ -265,8 +265,4 @@ def crawl_loop():
         instances[instance].run()
 
 if __name__ == '__main__':
-    while 1:
-        crawl_loop()
-        print 'Loop end'
-        print '-'*100
-        time.sleep(30)
+    crawl_loop()
