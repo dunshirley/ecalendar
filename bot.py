@@ -3,6 +3,7 @@ import os, re
 import time
 import random
 import urllib2
+import json
 from lxml import etree
 import datetime
 
@@ -166,10 +167,6 @@ class DamaiBot(Bot):
          super(DamaiBot, self).__init__()
 
     def get_date(self, year, month, day):
-        year = int(year)
-        month = int(month)
-        day = int(day)
-
         ans = datetime.date(int(year), int(month), int(day))
         return ans
 
@@ -241,11 +238,80 @@ class DamaiBot(Bot):
         finally:
             pass
 
+class DoubanBot(Bot):
+    def __init__(self):
+        super(DoubanBot, self).__init__()
+        self.interval = 7 # in seconds
+
+    def get_date(self, year, month, day):
+        ans = datetime.date(int(year), int(month), int(day))
+        return ans
+
+    def scrap(self, url):
+        crawl_start_time = datetime.datetime.now()
+        try:
+            print '-'*100 + '\n' + url.url
+            m = re.search(r'http://www\.douban\.com/event/(\d+)/?$', url.url)
+            event_id = m.group(1)
+            api_url = 'http://api.douban.com/v2/event/%s' % event_id
+            print '-'*100 + '\n-->' + api_url
+
+            page = self.opener.open(api_url).read().decode(self.encoding)
+            data = json.loads(page)
+
+            m = re.search(ur'(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)', data['begin_time'])
+            start_date = self.get_date(m.group(1), m.group(2), m.group(3))
+            start_time = self.get_time(m.group(4), m.group(5))
+
+            m = re.search(ur'(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)', data['end_time'])
+            end_date = self.get_date(m.group(1), m.group(2), m.group(3))
+            end_time = self.get_time(m.group(4), m.group(5))
+
+            city = City.objects.get(name=data['loc_name'])
+            print 'city = ', city, 'city_id = ', city.id
+
+            weight = 60 + random.randint(0,10)
+            public = False
+            source = '豆瓣'
+
+            try:
+                activity = Activity.objects.get(url=url.url, start_date=start_date)
+            except:
+                activity = Activity()
+            
+            activity.title = data['title']
+            activity.content = data['content']
+            activity.start_date = start_date
+            activity.start_time = start_time
+            activity.end_date = end_date
+            activity.end_time = end_time
+            activity.location = data['address']
+            activity.url = url.url
+            activity.city = city
+            activity.weight = weight
+            activity.public = public
+            activity.source = source
+            activity.save()
+
+            url.status = 'd'
+            url.crawl_start_time = crawl_start_time
+            url.crawl_end_time = datetime.datetime.now()
+            url.save()
+
+            print 'Done.'
+        except Exception, e:
+            print e
+            url.status = 'e'
+            url.crawl_start_time = crawl_start_time
+            url.crawl_end_time = datetime.datetime.now()
+            url.save()
+        finally:
+            pass
 
 bot_routes = (
-        (r'^http://[\w\d\.]*weibo.com', 'WeiboBot'),
-        (r'^http://[\w\d\.]*damai.cn', 'DamaiBot'),
-
+        (r'^http://[\w\d\.]*weibo\.com', 'WeiboBot'),
+        (r'^http://union\.damai\.cn', 'DamaiBot'),
+        (r'^http://www\.douban\.com', 'DoubanBot'),
         )
 
 instances = {}
@@ -253,7 +319,7 @@ for route in bot_routes:
     instances[route[1]] = globals()[route[1]]()
 
 
-def crawl_loop():
+def run():
     urls = StartURL.objects.filter(status='s')
     for url in urls:
         for route in bot_routes:
@@ -265,4 +331,4 @@ def crawl_loop():
         instances[instance].run()
 
 if __name__ == '__main__':
-    crawl_loop()
+    run()
