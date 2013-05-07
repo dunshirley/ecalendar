@@ -35,12 +35,12 @@ class Device(models.Model):
 
 class Activity(models.Model):
     city = models.ForeignKey(City)
-    location = models.CharField(max_length=200)
+    location = models.CharField(blank=True, max_length=200)
 
     title = models.CharField(max_length=2000)
     content = models.TextField()
     url = models.CharField(max_length=255)
-    source = models.CharField(max_length=100)
+    source = models.CharField(blank=True, max_length=100)
     start_date = models.DateField()
     start_time = models.TimeField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
