@@ -331,4 +331,6 @@ def run():
         instances[instance].run()
 
 if __name__ == '__main__':
+    from tendo import singleton
+    me = singleton.SingleInstance()
     run()

@@ -4,3 +4,4 @@ uWSGI
 -e git+https://github.com/liangsun/django-csvimport.git#egg=django-csvimport
 lxml
 supervisor
+tendo
