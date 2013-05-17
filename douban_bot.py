@@ -62,7 +62,7 @@ class DoubanBot(object):
             city = City.objects.get(name=event['loc_name'])
             
             try:
-                activity = Activity.objects.get(url=url, start_date=start_date)
+                activity = Activity.objects.get(url=event['alt'], start_date=start_date)
             except:
                 activity = Activity()
             
