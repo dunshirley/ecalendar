@@ -14,7 +14,7 @@ class DoubanBot(object):
     def __init__(self):
         self.cities = ['beijing', 'shanghai']
         self.urls = set()
-        self.interval = 60 # in seconds
+        self.interval = 7 # in seconds
         self.opener = urllib2.build_opener()
         self.opener.addheaders = [('User-agent', 'Mozilla/5.0 (compatible; EventsCalendarbot/1.0; +http://huodongrili.com/bot)')]
         self.encoding = 'utf-8'
@@ -29,7 +29,7 @@ class DoubanBot(object):
 
     def scrap(self, city, init):
         print '-'*100
-        url = 'https://api.douban.com/v2/event/list?loc=%s&start=%d' % (city, init)
+        url = 'https://api.douban.com/v2/event/list?loc=%s&type=film&start=%d' % (city, init)
         print 'url = ', url
         page = self.opener.open(url).read().decode(self.encoding)
         data = json.loads(page)
