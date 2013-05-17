@@ -12,7 +12,7 @@ from app.models import *
 
 class DoubanBot(object):
     def __init__(self):
-        self.cities = ['beijing', 'shanghai']
+        self.cities = ['beijing', 'shanghai', 'guangzhou', 'shenzhen', 'chengdu', 'hangzhou']
         self.urls = set()
         self.interval = 7 # in seconds
         self.opener = urllib2.build_opener()
