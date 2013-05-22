@@ -61,6 +61,85 @@ class Bot(object):
         ans = datetime.time(hour, minute)
         return ans
 
+class HeadinBot(Bot):
+    def __init__(self):
+        self.xpaths = {
+                'title': u'//h2/@title',
+                'start_datetime': u'//div[@class="countdown"]/@*',
+                'localtion': u'//p[@id="pAddress"]/text()',
+                'content': u'//div[@class="event-description"]/p//text()|//div[@class="event-description"]/h1//text()',
+            }
+        self.city_map = {u'北京' :'beijing', u'上海' :'shanghai'}
+        super(HeadinBot, self).__init__()
+
+    def scrap(self, url):
+        crawl_start_time = datetime.datetime.now()
+        tree = self.get_tree(url)
+        if tree is None:
+            return
+        try:
+            title = tree.xpath(self.xpaths['title'])[0].strip()
+            start_datetime = tree.xpath(self.xpaths['start_datetime'])[1].strip()
+            print 'get title = ', title
+            time_list = re.split('/|:|\s+',start_datetime)
+            if len(time_list) == 6:
+                start_date = self.get_date(*time_list[1:3])
+                start_time = self.get_time(*time_list[-2:])
+                end_date = self.get_date(12, 31)
+                end_time = self.get_time(23, 59)
+            else:
+                start_date = self.get_date(12, 31)
+                start_time = self.get_time(23, 59)
+                end_date = self.get_date(12, 31)
+                end_time = self.get_time(23, 59)
+            print "start_date=%s; start_time =%s;\nend_date=%s;end_time=%s" %(start_date, start_time, end_date, end_time)
+            tmp_localtion = tree.xpath(self.xpaths['localtion'])[0].strip().split()
+            localtion = tmp_localtion[-1]
+            city = self.city_map[tmp_localtion[1]]
+            print "localtion=%s;city=%s" % (localtion,city)
+            content_list = tree.xpath(self.xpaths['content'])
+            content =  "".join(content_list)
+            content = re.sub('\n+', '\n', content).strip().replace('\t','')
+            print "content = ", content
+
+            source = u'海丁'
+            weight = 75 + random.randint(0,10)
+            public = 0
+            try:
+                activity = Activity.objects.get(url=url.url, start_date=start_date)
+            except:
+                activity = Activity()
+
+            
+            activity.title = title
+            activity.content = content
+            activity.start_date = start_date
+            activity.start_time = start_time
+            activity.location = location
+            activity.url = url.url
+            activity.city = city
+            activity.weight = weight
+            activity.public = public
+            activity.source = source
+            activity.save()
+
+            url.status = 'd'
+            url.crawl_start_time = crawl_start_time
+            url.crawl_end_time = datetime.datetime.now()
+            url.save()
+
+            print 'Done.'
+        except Exception, e:
+            print e
+
+            url.status = 'e'
+            url.crawl_start_time = crawl_start_time
+            url.crawl_end_time = datetime.datetime.now()
+            url.save()
+        finally:
+            pass
+
+
 class WeiboBot(Bot):
     def __init__(self):
          self.xpaths = {
@@ -316,6 +395,7 @@ bot_routes = (
         (r'^http://[\w\d\.]*weibo\.com', 'WeiboBot'),
         (r'^http://union\.damai\.cn', 'DamaiBot'),
         (r'^http://www\.douban\.com', 'DoubanBot'),
+        (r'^http://www\.headin\.cn', 'HeadinBot'),
         )
 
 instances = {}
