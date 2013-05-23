@@ -69,7 +69,6 @@ class HeadinBot(Bot):
                 'localtion': u'//p[@id="pAddress"]/text()',
                 'content': u'//div[@class="event-description"]/p//text()|//div[@class="event-description"]/h1//text()',
             }
-        self.city_map = {u'北京' :'beijing', u'上海' :'shanghai'}
         super(HeadinBot, self).__init__()
 
             def scrap(self, url):
@@ -99,45 +98,39 @@ class HeadinBot(Bot):
         print "start_date=%s; start_time =%s;\nend_date=%s;end_time=%s" %(start_date, start_time, end_date, end_time)
         tmp_location = tree.xpath(self.xpaths['localtion'])[0].strip().split()
         location = tmp_location[-1]
-        if tmp_location[1] in self.city_map:
-            city = self.city_map[tmp_location[1]]
-            print "localtion=%s;city=%s" % (location,city)
-            content_list = tree.xpath(self.xpaths['content'])
-            content =  "".join(content_list)
-            content = re.sub('\n+', '\n', content).strip().replace('\t','')
-            print "content = ", content
+        city = City.objects.get(name=tmp_location[1])
+        print "localtion=%s;city=%s" % (location,city)
+        content_list = tree.xpath(self.xpaths['content'])
+        content =  "".join(content_list)
+        content = re.sub('\n+', '\n', content).strip().replace('\t','')
+        print "content = ", content
 
-            source = u'海丁'
-            weight = 75 + random.randint(0,10)
-            public = 0
-        else:
-            city = 'error'
-
+        source = u'海丁'
+        weight = 75 + random.randint(0,10)
+        public = 0
         try:
             activity = Activity.objects.get(url=url.url, start_date=start_date)
         except:
             activity = Activity()
 
-        if city != 'error':
-            activity.title = title
-            activity.content = content
-            activity.start_date = start_date
-            activity.start_time = start_time
-            activity.location = location
-            activity.url = url.url
-            activity.city = city
-            activity.weight = weight
-            activity.public = public
-            activity.source = source
-            activity.save()
-    
-            url.status = 'd'
-            url.crawl_start_time = crawl_start_time
-            url.crawl_end_time = datetime.datetime.now()
-            url.save()
-    
-            print 'Done.'
-        else:url.status = 'e'
+        activity.title = title
+        activity.content = content
+        activity.start_date = start_date
+        activity.start_time = start_time
+        activity.location = location
+        activity.url = url.url
+        activity.city = city
+        activity.weight = weight
+        activity.public = public
+        activity.source = source
+        activity.save()
+
+        url.status = 'd'
+        url.crawl_start_time = crawl_start_time
+        url.crawl_end_time = datetime.datetime.now()
+        url.save()
+
+        print 'Done.'
 
 class WeiboBot(Bot):
     def __init__(self):
