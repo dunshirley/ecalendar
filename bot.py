@@ -71,7 +71,7 @@ class HeadinBot(Bot):
             }
         super(HeadinBot, self).__init__()
 
-            def scrap(self, url):
+    def scrap(self, url):
         crawl_start_time = datetime.datetime.now()
         tree = self.get_tree(url)
         if tree is None:
