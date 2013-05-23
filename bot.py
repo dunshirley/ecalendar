@@ -72,7 +72,7 @@ class HeadinBot(Bot):
         self.city_map = {u'北京' :'beijing', u'上海' :'shanghai'}
         super(HeadinBot, self).__init__()
 
-            def scrap(self, url):
+    def scrap(self, url):
         crawl_start_time = datetime.datetime.now()
         tree = self.get_tree(url)
         if tree is None:
