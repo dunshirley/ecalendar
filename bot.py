@@ -25,7 +25,7 @@ class Bot(object):
 
     def add(self, url):
         self.urls.add(url)
-        
+
     def run(self):
         for url in self.urls:
             self.scrap(url)
@@ -39,7 +39,7 @@ class Bot(object):
             return etree.HTML(page)
         except Exception, e:
             print e
- 
+
     def scrap(self, url):
         pass
 
@@ -76,7 +76,7 @@ class HeadinBot(Bot):
         tree = self.get_tree(url)
         if tree is None:
             return
-        
+
         title = tree.xpath(self.xpaths['title'])[0].strip()
         try:
             start_datetime = tree.xpath(self.xpaths['start_datetime'])[1].strip()
@@ -98,7 +98,10 @@ class HeadinBot(Bot):
         print "start_date=%s; start_time =%s;\nend_date=%s;end_time=%s" %(start_date, start_time, end_date, end_time)
         tmp_location = tree.xpath(self.xpaths['localtion'])[0].strip().split()
         location = tmp_location[-1]
-        city = City.objects.get(name=tmp_location[1])
+        try:
+            city = City.objects.get(name=tmp_location[1])
+        except:
+            return
         print "localtion=%s;city=%s" % (location,city)
         content_list = tree.xpath(self.xpaths['content'])
         content =  "".join(content_list)
@@ -149,10 +152,10 @@ class WeiboBot(Bot):
         tree = self.get_tree(url)
         if tree is None:
             return
-        
+
         title = tree.xpath(self.xpaths['title'])[0].strip()
         print 'get title = ', title
-        
+
         found_date = False
         durations = tree.xpath(self.xpaths['duration'])
         if len(durations) > 0:
@@ -198,7 +201,7 @@ class WeiboBot(Bot):
         except:
             activity = Activity()
 
-        
+
         activity.title = title
         activity.content = content
         activity.start_date = start_date
@@ -241,10 +244,10 @@ class DamaiBot(Bot):
         tree = self.get_tree(url)
         if tree is None:
             return
-        
+
         title = tree.xpath(self.xpaths['title'])[0].strip()
         print 'get title = ', title
-        
+
         start_datetime = tree.xpath(self.xpaths['start_datetime'])[0].strip()
         m = re.search(ur'(\d+)-(\d+)-(\d+)T(\d+):(\d+)', start_datetime)
         start_date = self.get_date(m.group(1), m.group(2), m.group(3))
@@ -273,7 +276,7 @@ class DamaiBot(Bot):
         except:
             activity = Activity()
 
-        
+
         activity.title = title
         activity.content = content
         activity.start_date = start_date
@@ -332,7 +335,7 @@ class DoubanBot(Bot):
             activity = Activity.objects.get(url=url.url, start_date=start_date)
         except:
             activity = Activity()
-        
+
         activity.title = data['title']
         activity.content = data['content']
         activity.start_date = start_date
