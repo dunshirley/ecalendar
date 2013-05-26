@@ -71,6 +71,16 @@ class HeadinBot(Bot):
             }
         super(HeadinBot, self).__init__()
 
+    def find_city(self, *city_list):
+        city = None
+        for one_city in city_list:
+            try:
+                city = City.objects.get(name=one_city)
+                break
+            except:
+                continue
+        return city
+
     def scrap(self, url):
         crawl_start_time = datetime.datetime.now()
         tree = self.get_tree(url)
@@ -90,19 +100,13 @@ class HeadinBot(Bot):
             start_time = self.get_time(*time_list[3:5])
             end_date = self.get_date(12, 31)
             end_time = self.get_time(23, 59)
-        else:
-            start_date = self.get_date(12, 31)
-            start_time = self.get_time(23, 59)
-            end_date = self.get_date(12, 31)
-            end_time = self.get_time(23, 59)
+        else:return
         print "start_date=%s; start_time =%s;\nend_date=%s;end_time=%s" %(start_date, start_time, end_date, end_time)
         tmp_location = tree.xpath(self.xpaths['localtion'])[0].strip().split()
         location = tmp_location[-1]
-        try:
-            city = City.objects.get(name=tmp_location[1])
-        except:
-            return
-        print "localtion=%s;city=%s" % (location,city)
+        city = self.find_city(tmp_location[1], tmp_location[-1][:2])
+        if not city:return
+        print "localtion=%s;city=%s" % (location,city.name)
         content_list = tree.xpath(self.xpaths['content'])
         content =  "".join(content_list)
         content = re.sub('\n+', '\n', content).strip().replace('\t','')
