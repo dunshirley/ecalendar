@@ -1,4 +1,4 @@
-ecalendar
+ECalendar
 =========
 
-Internet Calendar With A Lot Of Interesting Events.
+This is an internet calendar with a lot of interesting events.
