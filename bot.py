@@ -3,6 +3,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('UTF-8')
 
+import traceback
 import os, re
 import time
 import random
@@ -28,7 +29,16 @@ class Bot(object):
 
     def run(self):
         for url in self.urls:
-            self.scrap(url)
+            crawl_start_time = datetime.datetime.now()
+            try:
+                self.scrap(url)
+            except Exception, e:
+                traceback.print_exc(file=sys.stdout)
+                url.status = 'd'
+                url.crawl_start_time = crawl_start_time
+                url.crawl_end_time = datetime.datetime.now()
+                url.save()
+
             time.sleep(self.interval)
 
     def get_tree(self, url):
