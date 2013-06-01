@@ -22,7 +22,8 @@ class DoubanBot(object):
         self.opener = urllib2.build_opener()
         self.opener.addheaders = [('User-agent', 'Mozilla/5.0 (compatible; EventsCalendarbot/1.0; +http://huodongrili.com/bot)')]
         self.encoding = 'utf-8'
-
+        self.blacklist = list(Blacklist.objects.all())
+        
 
     def run(self):
         for city in self.cities:
@@ -49,6 +50,17 @@ class DoubanBot(object):
         if total > start+count:
             return (city, start+count)
 
+    def in_balcklist(self, title):
+        for black in self.blacklist:
+            words = black.word.split()
+            appear = True
+            for word in words:
+                if not word in title:
+                    appear = False
+                    break
+            if appear:
+                return True
+        return False
 
     def save(self, event):
         try:
@@ -67,11 +79,17 @@ class DoubanBot(object):
             
             try:
                 activity = Activity.objects.get(url=event['alt'], start_date=start_date)
+                print 'This event is already stored.'
+                return
             except:
                 activity = Activity()
             
-            activity.title = event['title']
             print 'title = ', event['title']
+            if self.in_balcklist(event['title']):
+                print 'This event is in blacklist'
+                return
+
+            activity.title = event['title']
             activity.content = event['content']
             activity.start_date = start_date
             activity.start_time = start_time
