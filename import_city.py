@@ -12,5 +12,9 @@ for line in f:
     city = City()
     city.name = name
     city.pinyin = pinyin
-    city.save()
+    try:
+        city.save()
+    except:
+        pass
+
 f.close()
