@@ -109,7 +109,6 @@ class Apk(models.Model):
 
 class Blacklist(models.Model):
     word = models.CharField(max_length=20)
-    weight = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
         return self.word
