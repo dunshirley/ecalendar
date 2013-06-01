@@ -6,7 +6,8 @@ from django.shortcuts import redirect
 
 from app.models import *
 
-error_resp = HttpResponse(json.dumps({"result":"error"}, ensure_ascii=False), content_type="application/json; charset=utf-8")
+def error_resp():
+    return HttpResponse(json.dumps({"result":"error"}, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
 def calendar(request):
     if 'last_timestamp' in request.GET:
@@ -24,10 +25,11 @@ def calendar(request):
 
 def activities(request):
     if 'city' not in request.GET:
-        return error_resp
+        return error_resp()
     city = request.GET['city']
     if not City.objects.filter(pinyin=city):
-        return error_resp
+        #return HttpResponse('po')
+        return error_resp()
     city = City.objects.get(pinyin=city)
     if 'last_timestamp' in request.GET:
         last_timestamp = request.GET['last_timestamp']
@@ -73,7 +75,7 @@ def activities(request):
 def reaction(request):
     post = json.loads(request.body)
     if 'device_id' not in post or 'data' not in post:
-        return error_resp
+        return error_resp()
 
     reactions = post['data']
     device_id = post['device_id']
@@ -85,7 +87,7 @@ def reaction(request):
         dislike = reaction['dislike'] == '1'
         clicked = reaction['clicked'] == '1'
         if not Activity.objects.filter(id=activity_id):
-            return error_resp
+            return error_resp()
         activity = Activity.objects.get(id=activity_id)
         reaction = Reaction(activity=activity, device=device, 
                 like=like, dislike=dislike, clicked=clicked)
@@ -97,7 +99,7 @@ def reaction(request):
 def feedback(request):
     post = json.loads(request.body)
     if 'device_id' not in post or 'data' not in post:
-        return error_resp
+        return error_resp()
 
     content = post['data']
     device_id = post['device_id']
@@ -128,12 +130,12 @@ def download(request):
         try:
             apk = Apk.objects.get(version=version)
         except:
-            return error_resp
+            return error_resp()
     else:
         try:
             apk = Apk.objects.all().order_by('-id')[0]
         except:
-            return error_resp
+            return error_resp()
 
     data = {'result':'/download/' + apk.apkfile.url}
     return redirect('/download/' + apk.apkfile.url)
