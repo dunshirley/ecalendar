@@ -17,6 +17,7 @@ from app.models import *
 class DoubanBot(object):
     def __init__(self):
         self.cities = ['beijing', 'shanghai', 'guangzhou', 'shenzhen', 'chengdu', 'hangzhou']
+        self.types = ['film', 'salon', 'exhibition']
         self.urls = set()
         self.interval = 7 # in seconds
         self.opener = urllib2.build_opener()
@@ -27,14 +28,15 @@ class DoubanBot(object):
 
     def run(self):
         for city in self.cities:
-            state = (city, 0)
-            while state:
-                state = self.scrap(*state)
-                time.sleep(self.interval)
+            for t in self.types:
+                state = (city, t, 0)
+                while state:
+                    state = self.scrap(*state)
+                    time.sleep(self.interval)
 
-    def scrap(self, city, init):
+    def scrap(self, city, t, init):
         print '-'*100
-        url = 'https://api.douban.com/v2/event/list?loc=%s&type=film&start=%d' % (city, init)
+        url = 'https://api.douban.com/v2/event/list?loc=%s&type=%s&start=%d' % (city, t, init)
         print 'url = ', url
         page = self.opener.open(url).read().decode(self.encoding)
         data = json.loads(page)
@@ -48,7 +50,7 @@ class DoubanBot(object):
             self.save(event)
 
         if total > start+count:
-            return (city, start+count)
+            return (city, t, start+count)
 
     def in_balcklist(self, title):
         for black in self.blacklist:
