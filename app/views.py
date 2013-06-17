@@ -63,7 +63,13 @@ def activities(request):
         one['title'] = activity.title
         one['content'] = activity.content
         one['location'] = activity.location
-        one['url'] = activity.url
+        
+        if activity.url is not None and activity.url.startswith('http://www.douban.com/event/'):
+            # 将豆瓣网页 url 过滤为移动版 url 
+            one['url'] = activity.url.replace('http://www.douban.com/event/', 'http://m.douban.com/event/')
+        else:
+            one['url'] = activity.url
+        
         one['source'] = activity.source
         one['weight'] = activity.weight
         one['tags'] = [t.name for t in activity.tags.all()]
