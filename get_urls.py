@@ -3,8 +3,8 @@
 import os, urllib2, re, time
 from lxml import etree
 
-#os.environ.setdefault("DJANGO_SETTINGS_MODULE", "huodongrili.settings")
-#from app.models import City, StartURL
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "huodongrili.settings")
+from app.models import City, StartURL
 
 class Url(object):
     def __init__(self, url):
@@ -93,7 +93,7 @@ class HeadinUrl(FindUrl):
         base_name = os.path.basename(url)
         return cur_dir + '/' + base_name
 
-    def run(self, sleep_time, file_handle):
+    def run(self, sleep_time):
         for i in range(1, 201):
             process_url = self.source_url % i
             html_etree = self.get_html_etree(process_url)
@@ -159,7 +159,6 @@ def run():
             'HeadinUrl',)
     for i in instance_list:
         eval(i)().run(10)
-    out.close()
 
 
 if __name__ == '__main__':
