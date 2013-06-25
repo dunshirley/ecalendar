@@ -143,7 +143,7 @@ class DamaiUrl(HeadinUrl):
             for i in range(1, 201):
                 process_url = self.source_url % (one, i)
                 html_etree = self.get_html_etree(process_url)
-                if not html_etree:break
+                if html_etree is None:break
                 begin = self.get_max_page(html_etree, "//div[@class='dm-nodata-text pl10 mt15 mb15']/text()")
                 print process_url, begin
                 urls = self.out_url(html_etree, "//div[@class='ri-infos']/h2/a/@href")
